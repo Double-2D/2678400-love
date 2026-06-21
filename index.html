@@ -160,17 +160,20 @@
         }
 
         #result-screen h2 {
-            font-size: 1.8rem;
+            font-size: 1.5rem;
             line-height: 1.5;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
         }
 
+        /* --- PHẦN CHỈNH SỬA CHO HÌNH ẢNH --- */
         #love-package-img {
             max-width: 100%;
-            height: auto;
-            border-radius: 20px;
+            max-height: 40vh; /* Giới hạn chiều cao bằng 40% màn hình */
+            object-fit: contain; /* Ép ảnh vừa khung mà không bị cắt */
+            border-radius: 15px;
             box-shadow: 0 10px 20px rgba(0,0,0,0.15);
-            margin-top: 15px;
+            margin: 15px auto 0;
+            display: block; /* Giúp căn giữa ảnh dễ dàng */
         }
 
         .floating-heart {
@@ -239,10 +242,10 @@
         <h1 class="romantic-text">Yêu Quỳnh Nhất Trên Đời ❤</h1>
         <h2>Chúc mừng bạn đã hoàn thành các câu hỏi và nhận được một gói tình yêu của Danh trọn đời</h2>
         
-        <img src="./anh.jpg" 
+        <img src="anh.jpg" 
              alt="Gói tình yêu trọn đời" 
              id="love-package-img"
-             onerror="this.onerror=null; this.src='https://via.placeholder.com/400x300/ffeef2/ff758c?text=Hinh+anh+bi+loi.+Hay+kiem+tra+lai+ten+file+la+anh.jpg';">
+             onerror="this.onerror=null; this.src='https://via.placeholder.com/400x300/ffeef2/ff758c?text=Hinh+anh+bi+loi.+Hay+kiem+tra+lai+ten+file';">
         
         <p><button class="btn" onclick="resetQuiz()">Làm lại bài test tình yêu?</button></p>
     </div>
@@ -250,7 +253,6 @@
 </div>
 
 <script>
-    // Đã thêm phần thông báo riêng (successMsg) cho từng câu hỏi
     const quizData = [
         {
             question: "Số nào sau đây là số nguyên tố?",
@@ -322,7 +324,7 @@
         isProcessing = true;
 
         const correctIndex = quizData[currentQuestionIndex].correct;
-        const successMessage = quizData[currentQuestionIndex].successMsg; // Lấy câu chúc từ data
+        const successMessage = quizData[currentQuestionIndex].successMsg;
 
         const allButtons = document.querySelectorAll('.option-btn');
         allButtons.forEach(btn => btn.style.pointerEvents = 'none');
@@ -330,7 +332,6 @@
         if (selectedIndex === correctIndex) {
             // == HIỆU ỨNG ĐÚNG ==
             buttonElement.classList.add('correct');
-            // Hiển thị câu thông báo tương ứng
             showToast(successMessage + " ❤", "#a8e6cf", "#1a5c46");
             createFlyingHearts(); 
 
@@ -343,7 +344,7 @@
                     createFlyingHearts();
                     createFlyingHearts(); 
                 }
-            }, 1800); // Kéo dài thêm 1 chút xíu để Quỳnh kịp đọc thông báo
+            }, 1800); 
 
         } else {
             // == HIỆU ỨNG SAI ==
