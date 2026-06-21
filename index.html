@@ -4,18 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Couple Quiz: Danh ❤ Quỳnh</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
+    
     <style>
         :root {
-            --primary-color: #ff85a2; /* Hồng pastel */
-            --secondary-color: #ffe0e9; /* Hồng rất nhạt */
-            --text-color: #5d4037; /* Nâu trầm */
+            --primary-color: #ff758c; 
+            --secondary-color: #ff7eb3;
+            --bg-color: #ffeef2;
+            --text-color: #4a4a4a;
             --white: #ffffff;
-            --success-color: #8bc34a; /* Xanh lá */
-            --fail-color: #ef5350; /* Đỏ pastel */
+            --success-color: #a8e6cf;
+            --fail-color: #ffaaa5;
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            /* Sử dụng font Quicksand cho toàn bộ web */
+            font-family: 'Quicksand', sans-serif;
             margin: 0;
             padding: 0;
             color: var(--text-color);
@@ -23,85 +28,102 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            /* Nền hoa xinh đẹp bằng CSS-only pattern */
-            background-color: var(--secondary-color);
+            background-color: var(--bg-color);
             background-image: 
-                radial-gradient(var(--primary-color) 20%, transparent 20%),
-                radial-gradient(var(--primary-color) 20%, transparent 20%);
+                radial-gradient(#ffc4d4 20%, transparent 20%),
+                radial-gradient(#ffc4d4 20%, transparent 20%);
             background-position: 0 0, 50px 50px;
             background-size: 100px 100px;
-            opacity: 0.9;
+            overflow: hidden; /* Ngăn cuộn trang khi có hiệu ứng trái tim bay */
+        }
+
+        /* Font Dancing Script cho các tiêu đề */
+        h1, h2, .romantic-text {
+            font-family: 'Dancing Script', cursive;
+            color: var(--primary-color);
+            margin-top: 0;
+            font-size: 2.5rem;
         }
 
         .main-container {
-            background-color: rgba(255, 255, 255, 0.95);
+            background-color: rgba(255, 255, 255, 0.98);
             width: 90%;
             max-width: 500px;
-            padding: 30px;
-            border-radius: 20px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            padding: 40px 30px;
+            border-radius: 25px;
+            box-shadow: 0 15px 35px rgba(255, 117, 140, 0.2);
             text-align: center;
             position: relative;
-            overflow: hidden;
+            z-index: 10;
+        }
+
+        /* Hiệu ứng rung lắc khi trả lời sai */
+        @keyframes shake {
+            0% { transform: translateX(0); }
+            20% { transform: translateX(-15px); }
+            40% { transform: translateX(15px); }
+            60% { transform: translateX(-15px); }
+            80% { transform: translateX(15px); }
+            100% { transform: translateX(0); }
+        }
+        .shake {
+            animation: shake 0.5s ease-in-out;
+            border: 3px solid var(--fail-color);
         }
 
         .screen {
-            display: none; /* Ẩn các màn hình mặc định */
+            display: none; 
         }
 
         .screen.active {
-            display: block; /* Chỉ hiện màn hình active */
-            animation: fadeIn 0.5s ease;
+            display: block; 
+            animation: fadeIn 0.6s ease;
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
+            from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
-        }
-
-        h1, h2 {
-            color: var(--primary-color);
-            margin-top: 0;
         }
 
         p {
             line-height: 1.6;
+            font-size: 1.1rem;
         }
 
-        .heart {
-            color: var(--primary-color);
-            font-size: 1.5rem;
-        }
-
-        /* Phong cách nút */
         .btn {
-            background-color: var(--primary-color);
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
             color: white;
             border: none;
-            padding: 12px 24px;
-            border-radius: 30px;
-            font-size: 1rem;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-family: 'Quicksand', sans-serif;
+            font-weight: 700;
             cursor: pointer;
             transition: all 0.3s ease;
             margin-top: 20px;
-            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(255, 117, 140, 0.4);
         }
 
         .btn:hover {
-            background-color: #ff6b8a;
-            transform: scale(1.05);
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 8px 20px rgba(255, 117, 140, 0.6);
         }
 
-        /* Phong cách Quiz */
         #question-number {
-            font-weight: bold;
-            color: var(--primary-color);
-            margin-bottom: 10px;
+            font-weight: 700;
+            color: #ff8fa3;
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
         }
 
         #question-text {
-            font-size: 1.2rem;
-            margin-bottom: 20px;
+            font-size: 1.4rem;
+            margin-bottom: 25px;
+            font-weight: 700;
+            color: #333;
         }
 
         .options-container {
@@ -112,24 +134,38 @@
 
         .option-btn {
             background-color: var(--white);
-            border: 2px solid var(--secondary-color);
+            border: 2px solid #ffeef2;
             color: var(--text-color);
-            padding: 15px;
-            border-radius: 10px;
+            padding: 15px 20px;
+            border-radius: 15px;
             text-align: left;
             cursor: pointer;
-            transition: all 0.2s ease;
-            font-size: 1rem;
+            transition: all 0.3s ease;
+            font-size: 1.1rem;
+            font-family: 'Quicksand', sans-serif;
+            font-weight: 500;
         }
 
         .option-btn:hover {
-            background-color: var(--secondary-color);
+            background-color: #fff0f3;
             border-color: var(--primary-color);
+            transform: translateX(5px);
         }
 
-        /* Màn hình kết thúc */
+        .option-btn.correct {
+            background-color: var(--success-color);
+            border-color: #78c2ad;
+            color: #1a5c46;
+        }
+
+        .option-btn.wrong {
+            background-color: var(--fail-color);
+            border-color: #ff7b72;
+            color: #7b1e18;
+        }
+
         #result-screen h2 {
-            font-size: 1.3rem;
+            font-size: 1.8rem;
             line-height: 1.5;
             margin-bottom: 25px;
         }
@@ -137,170 +173,226 @@
         #love-package-img {
             max-width: 100%;
             height: auto;
-            border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border-radius: 20px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+            margin-top: 15px;
         }
 
+        /* Hiệu ứng trái tim bay */
+        .floating-heart {
+            position: fixed;
+            bottom: -20px;
+            color: var(--primary-color);
+            font-size: 2rem;
+            animation: floatUp 2s ease-in forwards;
+            z-index: 100;
+            pointer-events: none;
+        }
+
+        @keyframes floatUp {
+            0% { opacity: 1; transform: translateY(0) scale(1) rotate(0deg); }
+            100% { opacity: 0; transform: translateY(-100vh) scale(1.5) rotate(360deg); }
+        }
+
+        /* Thông báo nổi (Toast) */
+        #toast {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 15px 30px;
+            border-radius: 50px;
+            color: white;
+            font-weight: bold;
+            font-size: 1.2rem;
+            z-index: 1000;
+            display: none;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            animation: popIn 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        @keyframes popIn {
+            0% { transform: translate(-50%, -20px); opacity: 0; }
+            100% { transform: translate(-50%, 0); opacity: 1; }
+        }
     </style>
 </head>
 <body>
 
-<div class="main-container">
+<div id="toast">Thông báo</div>
+
+<div class="main-container" id="main-card">
     
-    <!-- === MÀN HÌNH MỞ ĐẦU === -->
     <div id="intro-screen" class="screen active">
         <h1>Welcome Quỳnh Bé Yêu!</h1>
-        <p class="heart">❤❤❤</p>
+        <p class="romantic-text" style="font-size: 2rem;">❤❤❤</p>
         <p>Chào mừng vợ yêu của Danh đến với thử thách nhỏ!</p>
         <p>Hãy trả lời đúng 5 câu hỏi để nhận một món quà bí mật từ anh nhé.</p>
-        <p><em>Lưu ý: Chỉ cần sai một câu, em sẽ phải yêu lại từ đầu... à nhầm, trả lời lại từ đầu đó!</em></p>
-        <button class="btn" onclick="startQuiz()">Bắt đầu ngay!</button>
+        <p style="color: #ff4d6d; font-size: 0.9rem;"><em>Lưu ý: Chỉ cần sai một câu, em sẽ phải yêu lại từ đầu... à nhầm, trả lời lại từ đầu đó!</em></p>
+        <button class="btn" onclick="startQuiz()">Bắt đầu ngay thôiiii!</button>
     </div>
 
-    <!-- === MÀN HÌNH TRẮC NGHIỆM === -->
     <div id="quiz-screen" class="screen">
         <div id="question-number">Câu 1/5</div>
         <div id="question-text">Đang tải câu hỏi...</div>
         <div class="options-container" id="options-container">
-            <!-- Các nút đáp án sẽ được JS chèn vào đây -->
-        </div>
+            </div>
     </div>
 
-    <!-- === MÀN HÌNH KẾT THÚC === -->
     <div id="result-screen" class="screen">
-        <h1>❤❤❤</h1>
+        <h1 class="romantic-text">Yêu Quỳnh Nhất Trên Đời ❤</h1>
         <h2>Chúc mừng bạn đã hoàn thành các câu hỏi và nhận được một gói tình yêu của Danh trọn đời</h2>
-        <img src="7f2e9f54-5b55-4f2d-aa40-8a17cc681d69.jfif" alt="Gói tình yêu trọn đời" id="love-package-img">
-        <p><button class="btn" onclick="resetQuiz()">Yêu lại lần nữa?</button></p>
+        
+        <img src="7f2e9f54-5b55-4f2d-aa40-8a17cc681d69.jfif" 
+             alt="Gói tình yêu trọn đời" 
+             id="love-package-img"
+             onerror="this.onerror=null; this.src='https://via.placeholder.com/400x300/ffeef2/ff758c?text=Loi+Hinh+Anh+Cua+Danh.+Kiem+Tra+Lai+Ten+File';">
+        
+        <p><button class="btn" onclick="resetQuiz()">Làm lại bài test tình yêu?</button></p>
     </div>
 
 </div>
 
 <script>
-    // === DỮ LIỆU CÂU HỎI ===
     const quizData = [
         {
             question: "Số nào sau đây là số nguyên tố?",
-            options: [
-                "Đáp án A: 1",
-                "Đáp án B: 4",
-                "Đáp án C: 1704",
-                "Đáp án D: 1017122009"
-            ],
-            correct: 3 // Chỉ số của đáp án D (0, 1, 2, 3)
+            options: ["Đáp án A: 1", "Đáp án B: 4", "Đáp án C: 1704", "Đáp án D: 1017122009"],
+            correct: 3 
         },
         {
             question: "Danh muốn gọi Quỳnh là gì nhất?",
-            options: [
-                "Đáp án A: Baby",
-                "Đáp án B: Vợ yêu xinh đẹp dễ thương tuyệt vời cute phô mai que của tui",
-                "Đáp án C: Bé yêu",
-                "Đáp án D: Vợ yêu"
-            ],
-            correct: 1 // Chỉ số của đáp án B
+            options: ["Đáp án A: Baby", "Đáp án B: Vợ yêu xinh đẹp dễ thương tuyệt vời cute phô mai que của tui", "Đáp án C: Bé yêu", "Đáp án D: Vợ yêu"],
+            correct: 1 
         },
         {
             question: "Danh thấy Quỳnh đẹp nhất khi nào?",
-            options: [
-                "Đáp án A: Khi Quỳnh cười",
-                "Đáp án B: Khi được Quỳnh ôm",
-                "Đáp án C: Khi Danh nhìn vào trong đôi mắt Quỳnh",
-                "Đáp án D: Khi nào vợ Quỳnh của tui cũng đẹp hết á"
-            ],
-            correct: 3 // Chỉ số của đáp án D
+            options: ["Đáp án A: Khi Quỳnh cười", "Đáp án B: Khi được Quỳnh ôm", "Đáp án C: Khi Danh nhìn vào trong đôi mắt Quỳnh", "Đáp án D: Khi nào vợ Quỳnh của tui cũng đẹp hết á"],
+            correct: 3 
         },
         {
             question: "Bạn Danh đang có mong ước gì?",
-            options: [
-                "Đáp án A: Ước được trở thành tỷ phú",
-                "Đáp án B: Ước được phú bà nuôi",
-                "Đáp án C: Ước được yêu Quỳnh mãiiiii",
-                "Đáp án D: Ước được hôn Quỳnh"
-            ],
-            correct: 2 // Chỉ số của đáp án C
+            options: ["Đáp án A: Ước được trở thành tỷ phú", "Đáp án B: Ước được phú bà nuôi", "Đáp án C: Ước được yêu Quỳnh mãiiiii", "Đáp án D: Ước được hôn Quỳnh"],
+            correct: 2 
         },
         {
             question: "Danh có muốn là của Quỳnh mãi hay không?",
-            options: [
-                "Đáp án A: Cóooooo",
-                "Đáp án B: Không"
-            ],
-            correct: 0 // Chỉ số của đáp án A
+            options: ["Đáp án A: Cóooooo", "Đáp án B: Không"],
+            correct: 0 
         }
     ];
 
-    // === BIẾN ĐIỀU KHIỂN ===
     let currentQuestionIndex = 0;
+    let isProcessing = false; // Ngăn bấm liên tục nhiều nút
 
-    // === DOM ELEMENTS ===
     const screens = document.querySelectorAll('.screen');
     const questionNumberElement = document.getElementById('question-number');
     const questionTextElement = document.getElementById('question-text');
     const optionsContainer = document.getElementById('options-container');
+    const mainCard = document.getElementById('main-card');
+    const toast = document.getElementById('toast');
 
-    // === CÁC HÀM CHỨC NĂNG ===
-
-    // 1. Bắt đầu Quiz
     function startQuiz() {
         showScreen('quiz-screen');
         loadQuestion(0);
     }
 
-    // 2. Tải câu hỏi dựa trên Index
     function loadQuestion(index) {
         currentQuestionIndex = index;
+        isProcessing = false;
         const currentData = quizData[index];
 
-        // Cập nhật số câu hỏi và nội dung
-        questionNumberElement.innerText = `Câu ${index + 1}/${quizData.length}`;
+        questionNumberElement.innerText = `Câu ${index + 1} / ${quizData.length}`;
         questionTextElement.innerText = currentData.question;
-
-        // Xóa các đáp án cũ
         optionsContainer.innerHTML = '';
 
-        // Chèn đáp án mới
         currentData.options.forEach((optionText, optionIndex) => {
             const button = document.createElement('button');
             button.classList.add('option-btn');
             button.innerText = optionText;
-            button.onclick = () => checkAnswer(optionIndex);
+            button.onclick = () => checkAnswer(optionIndex, button);
             optionsContainer.appendChild(button);
         });
     }
 
-    // 3. Kiểm tra đáp án
-    function checkAnswer(selectedIndex) {
+    function checkAnswer(selectedIndex, buttonElement) {
+        if (isProcessing) return; // Nếu đang xử lý hiệu ứng thì không cho bấm nút khác
+        isProcessing = true;
+
         const correctIndex = quizData[currentQuestionIndex].correct;
 
+        // Xóa các event click của tất cả các nút
+        const allButtons = document.querySelectorAll('.option-btn');
+        allButtons.forEach(btn => btn.style.pointerEvents = 'none');
+
         if (selectedIndex === correctIndex) {
-            // NẾU ĐÚNG
-            currentQuestionIndex++;
-            
-            if (currentQuestionIndex < quizData.length) {
-                // Tải câu tiếp theo
-                loadQuestion(currentQuestionIndex);
-            } else {
-                // Hoàn thành 5 câu -> Hiện màn hình kết quả
-                showScreen('result-screen');
-            }
+            // == HIỆU ỨNG ĐÚNG ==
+            buttonElement.classList.add('correct');
+            showToast("Đúng rồi vợ iuuu! Đỉnh quá nha ❤", "#a8e6cf", "#1a5c46");
+            createFlyingHearts(); // Gọi mưa trái tim
+
+            setTimeout(() => {
+                currentQuestionIndex++;
+                if (currentQuestionIndex < quizData.length) {
+                    loadQuestion(currentQuestionIndex);
+                } else {
+                    showScreen('result-screen');
+                    createFlyingHearts();
+                    createFlyingHearts(); // Bắn nhiều trái tim hơn ở màn cuối
+                }
+            }, 1500); // Chuyển câu sau 1.5 giây
+
         } else {
-            // NẾU SAI -> TRẢ LỜI LẠI TỪ CÂU ĐẦU TIÊN
-            alert("Sai rồi bé ơi! ❤ Nhấn OK để yêu lại... à trả lời lại từ đầu nhé!");
-            loadQuestion(0); // Reset về câu 0
+            // == HIỆU ỨNG SAI ==
+            buttonElement.classList.add('wrong');
+            mainCard.classList.add('shake'); // Rung lắc khung
+            showToast("Sai béng rồi! Phạt làm lại từ đầu nha 😜", "#ffaaa5", "#7b1e18");
+            
+            setTimeout(() => {
+                mainCard.classList.remove('shake');
+                loadQuestion(0); // Bắt đầu lại từ câu 0
+            }, 2000); // Đợi 2 giây cho đọc thông báo rồi quay lại
         }
     }
 
-    // 4. Chuyển đổi màn hình
     function showScreen(screenId) {
-        screens.forEach(screen => {
-            screen.classList.remove('active');
-        });
+        screens.forEach(screen => screen.classList.remove('active'));
         document.getElementById(screenId).classList.add('active');
     }
 
-    // 5. Chơi lại (Reset toàn bộ)
     function resetQuiz() {
         showScreen('intro-screen');
+    }
+
+    // Hàm tạo mưa trái tim bay
+    function createFlyingHearts() {
+        for (let i = 0; i < 15; i++) {
+            setTimeout(() => {
+                const heart = document.createElement('div');
+                heart.classList.add('floating-heart');
+                heart.innerHTML = '❤';
+                heart.style.left = Math.random() * 100 + 'vw';
+                heart.style.animationDuration = (Math.random() * 1.5 + 1) + 's';
+                document.body.appendChild(heart);
+
+                // Xóa trái tim sau khi bay xong
+                setTimeout(() => {
+                    heart.remove();
+                }, 2500);
+            }, i * 100);
+        }
+    }
+
+    // Hàm hiển thị thông báo góc trên
+    function showToast(message, bgColor, color) {
+        toast.innerText = message;
+        toast.style.backgroundColor = bgColor;
+        toast.style.color = color;
+        toast.style.display = 'block';
+
+        setTimeout(() => {
+            toast.style.display = 'none';
+        }, 1800);
     }
 
 </script>
