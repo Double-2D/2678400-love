@@ -19,7 +19,6 @@
         }
 
         body {
-            /* Sử dụng font Quicksand cho toàn bộ web */
             font-family: 'Quicksand', sans-serif;
             margin: 0;
             padding: 0;
@@ -34,10 +33,9 @@
                 radial-gradient(#ffc4d4 20%, transparent 20%);
             background-position: 0 0, 50px 50px;
             background-size: 100px 100px;
-            overflow: hidden; /* Ngăn cuộn trang khi có hiệu ứng trái tim bay */
+            overflow: hidden; 
         }
 
-        /* Font Dancing Script cho các tiêu đề */
         h1, h2, .romantic-text {
             font-family: 'Dancing Script', cursive;
             color: var(--primary-color);
@@ -57,7 +55,6 @@
             z-index: 10;
         }
 
-        /* Hiệu ứng rung lắc khi trả lời sai */
         @keyframes shake {
             0% { transform: translateX(0); }
             20% { transform: translateX(-15px); }
@@ -71,9 +68,7 @@
             border: 3px solid var(--fail-color);
         }
 
-        .screen {
-            display: none; 
-        }
+        .screen { display: none; }
 
         .screen.active {
             display: block; 
@@ -178,7 +173,6 @@
             margin-top: 15px;
         }
 
-        /* Hiệu ứng trái tim bay */
         .floating-heart {
             position: fixed;
             bottom: -20px;
@@ -194,7 +188,6 @@
             100% { opacity: 0; transform: translateY(-100vh) scale(1.5) rotate(360deg); }
         }
 
-        /* Thông báo nổi (Toast) */
         #toast {
             position: fixed;
             top: 20px;
@@ -209,6 +202,9 @@
             display: none;
             box-shadow: 0 5px 15px rgba(0,0,0,0.2);
             animation: popIn 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            text-align: center;
+            width: max-content;
+            max-width: 90%;
         }
 
         @keyframes popIn {
@@ -236,17 +232,17 @@
         <div id="question-number">Câu 1/5</div>
         <div id="question-text">Đang tải câu hỏi...</div>
         <div class="options-container" id="options-container">
-            </div>
+        </div>
     </div>
 
     <div id="result-screen" class="screen">
         <h1 class="romantic-text">Yêu Quỳnh Nhất Trên Đời ❤</h1>
         <h2>Chúc mừng bạn đã hoàn thành các câu hỏi và nhận được một gói tình yêu của Danh trọn đời</h2>
         
-        <img src="7f2e9f54-5b55-4f2d-aa40-8a17cc681d69.jfif" 
+        <img src="./anh.jpg" 
              alt="Gói tình yêu trọn đời" 
              id="love-package-img"
-             onerror="this.onerror=null; this.src='https://via.placeholder.com/400x300/ffeef2/ff758c?text=Loi+Hinh+Anh+Cua+Danh.+Kiem+Tra+Lai+Ten+File';">
+             onerror="this.onerror=null; this.src='https://via.placeholder.com/400x300/ffeef2/ff758c?text=Hinh+anh+bi+loi.+Hay+kiem+tra+lai+ten+file+la+anh.jpg';">
         
         <p><button class="btn" onclick="resetQuiz()">Làm lại bài test tình yêu?</button></p>
     </div>
@@ -254,36 +250,42 @@
 </div>
 
 <script>
+    // Đã thêm phần thông báo riêng (successMsg) cho từng câu hỏi
     const quizData = [
         {
             question: "Số nào sau đây là số nguyên tố?",
             options: ["Đáp án A: 1", "Đáp án B: 4", "Đáp án C: 1704", "Đáp án D: 1017122009"],
-            correct: 3 
+            correct: 3,
+            successMsg: "Sao biết hay zậyyy!!"
         },
         {
             question: "Danh muốn gọi Quỳnh là gì nhất?",
             options: ["Đáp án A: Baby", "Đáp án B: Vợ yêu xinh đẹp dễ thương tuyệt vời cute phô mai que của tui", "Đáp án C: Bé yêu", "Đáp án D: Vợ yêu"],
-            correct: 1 
+            correct: 1,
+            successMsg: "Đúng rùi nèeee"
         },
         {
             question: "Danh thấy Quỳnh đẹp nhất khi nào?",
             options: ["Đáp án A: Khi Quỳnh cười", "Đáp án B: Khi được Quỳnh ôm", "Đáp án C: Khi Danh nhìn vào trong đôi mắt Quỳnh", "Đáp án D: Khi nào vợ Quỳnh của tui cũng đẹp hết á"],
-            correct: 3 
+            correct: 3,
+            successMsg: "Đúng gòi á khi nào vợ tui cũng đẹp hết í"
         },
         {
             question: "Bạn Danh đang có mong ước gì?",
             options: ["Đáp án A: Ước được trở thành tỷ phú", "Đáp án B: Ước được phú bà nuôi", "Đáp án C: Ước được yêu Quỳnh mãiiiii", "Đáp án D: Ước được hôn Quỳnh"],
-            correct: 2 
+            correct: 2,
+            successMsg: "Đúng rồiiii là ước được yêu mãiiii"
         },
         {
             question: "Danh có muốn là của Quỳnh mãi hay không?",
             options: ["Đáp án A: Cóooooo", "Đáp án B: Không"],
-            correct: 0 
+            correct: 0,
+            successMsg: "Vợ yêu giỏi quá taaa"
         }
     ];
 
     let currentQuestionIndex = 0;
-    let isProcessing = false; // Ngăn bấm liên tục nhiều nút
+    let isProcessing = false; 
 
     const screens = document.querySelectorAll('.screen');
     const questionNumberElement = document.getElementById('question-number');
@@ -316,20 +318,21 @@
     }
 
     function checkAnswer(selectedIndex, buttonElement) {
-        if (isProcessing) return; // Nếu đang xử lý hiệu ứng thì không cho bấm nút khác
+        if (isProcessing) return; 
         isProcessing = true;
 
         const correctIndex = quizData[currentQuestionIndex].correct;
+        const successMessage = quizData[currentQuestionIndex].successMsg; // Lấy câu chúc từ data
 
-        // Xóa các event click của tất cả các nút
         const allButtons = document.querySelectorAll('.option-btn');
         allButtons.forEach(btn => btn.style.pointerEvents = 'none');
 
         if (selectedIndex === correctIndex) {
             // == HIỆU ỨNG ĐÚNG ==
             buttonElement.classList.add('correct');
-            showToast("Đúng rồi vợ iuuu! Đỉnh quá nha ❤", "#a8e6cf", "#1a5c46");
-            createFlyingHearts(); // Gọi mưa trái tim
+            // Hiển thị câu thông báo tương ứng
+            showToast(successMessage + " ❤", "#a8e6cf", "#1a5c46");
+            createFlyingHearts(); 
 
             setTimeout(() => {
                 currentQuestionIndex++;
@@ -338,20 +341,20 @@
                 } else {
                     showScreen('result-screen');
                     createFlyingHearts();
-                    createFlyingHearts(); // Bắn nhiều trái tim hơn ở màn cuối
+                    createFlyingHearts(); 
                 }
-            }, 1500); // Chuyển câu sau 1.5 giây
+            }, 1800); // Kéo dài thêm 1 chút xíu để Quỳnh kịp đọc thông báo
 
         } else {
             // == HIỆU ỨNG SAI ==
             buttonElement.classList.add('wrong');
-            mainCard.classList.add('shake'); // Rung lắc khung
+            mainCard.classList.add('shake'); 
             showToast("Sai rùiiii! Phạt làm lại từ đầu nha 😜", "#ffaaa5", "#7b1e18");
             
             setTimeout(() => {
                 mainCard.classList.remove('shake');
-                loadQuestion(0); // Bắt đầu lại từ câu 0
-            }, 2000); // Đợi 2 giây cho đọc thông báo rồi quay lại
+                loadQuestion(0); 
+            }, 2000); 
         }
     }
 
@@ -364,7 +367,6 @@
         showScreen('intro-screen');
     }
 
-    // Hàm tạo mưa trái tim bay
     function createFlyingHearts() {
         for (let i = 0; i < 15; i++) {
             setTimeout(() => {
@@ -375,7 +377,6 @@
                 heart.style.animationDuration = (Math.random() * 1.5 + 1) + 's';
                 document.body.appendChild(heart);
 
-                // Xóa trái tim sau khi bay xong
                 setTimeout(() => {
                     heart.remove();
                 }, 2500);
@@ -383,7 +384,6 @@
         }
     }
 
-    // Hàm hiển thị thông báo góc trên
     function showToast(message, bgColor, color) {
         toast.innerText = message;
         toast.style.backgroundColor = bgColor;
