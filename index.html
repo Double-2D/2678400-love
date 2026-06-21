@@ -335,6 +335,7 @@
             showToast(successMessage + " ❤", "#a8e6cf", "#1a5c46");
             createFlyingHearts(); 
 
+            // ĐÃ CHỈNH SỬA THỜI GIAN THÀNH 2 GIÂY (2000 ms)
             setTimeout(() => {
                 currentQuestionIndex++;
                 if (currentQuestionIndex < quizData.length) {
@@ -344,7 +345,7 @@
                     createFlyingHearts();
                     createFlyingHearts(); 
                 }
-            }, 1800); 
+            }, 2000); 
 
         } else {
             // == HIỆU ỨNG SAI ==
@@ -391,9 +392,10 @@
         toast.style.color = color;
         toast.style.display = 'block';
 
+        // ĐÃ CHỈNH SỬA THỜI GIAN HIỂN THỊ THÔNG BÁO THÀNH 2 GIÂY (2000 ms)
         setTimeout(() => {
             toast.style.display = 'none';
-        }, 1800);
+        }, 2000);
     }
 
 </script>
